@@ -29,3 +29,11 @@ export interface SourcesResponse {
     status: string;
     sources: Source[];
 }
+
+export interface NewsData {
+    articles?: NewsItem[];
+}
+
+export interface SourcesData {
+    sources?: Source[];
+}

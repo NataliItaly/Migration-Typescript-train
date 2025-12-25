@@ -1,5 +1,6 @@
 import News from './news/news';
 import Sources from './sources/sources';
+import { NewsData, SourcesData } from '../interfaces/interfaces';
 
 export class AppView {
     constructor() {
