@@ -3,11 +3,15 @@ import { NewsItem } from '../../interfaces/interfaces';
 import { constants } from 'buffer';
 
 class News {
-    private setElement<T extends Element>(root: ParentNode, selector: string, callback: (el: T) => void): void {
+    private setElement<T extends HTMLElement>(root: ParentNode, selector: string, callback: (el: T) => void, options?: {required?: boolean}): void {
         const el = root.querySelector(selector) as T | null;
-        if (el) {
-            callback(el);
+
+        if (!el) {
+            if (options?.required) {
+                console.warn('Container .news not found');
+            }
         }
+        callback(el);
     }
 
     draw(data: NewsItem[]): void {
@@ -27,7 +31,7 @@ class News {
             if (newsItemElement && idx % 2) {
                 newsItemElement.classList.add('alt');
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__item', (el) => {
+            this.setElement(newsClone, '.news__item', (el) => {
                 if (idx % 2) el.classList.add('alt')
             });
 
@@ -37,7 +41,7 @@ class News {
                     item.urlToImage || 'img/news_placeholder.jpg'
                     })`;
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__meta-photo', (el) => {
+            this.setElement(newsClone, '.news__meta-photo', (el) => {
                 el.style.backgroundImage = `url(${
                     item.urlToImage || 'img/news_placeholder.jpg'
                     })`
@@ -47,7 +51,7 @@ class News {
             if (authorElement) {
                 authorElement.textContent = item.author || item.source.name;
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__meta-author', (el) => {
+            this.setElement(newsClone, '.news__meta-author', (el) => {
                 el.textContent = item.author || item.source.name;
             });
 
@@ -59,7 +63,7 @@ class News {
                 .reverse()
                 .join('-');
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__meta-date', (el) => el.textContent = item.publishedAt
+            this.setElement(newsClone, '.news__meta-date', (el) => el.textContent = item.publishedAt
                 .slice(0, 10)
                 .split('-')
                 .reverse()
@@ -69,42 +73,41 @@ class News {
             if (titleElement) {
                 titleElement.textContent = item.title;
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__description-title', (el) => el.textContent = item.title);
+            this.setElement(newsClone, '.news__description-title', (el) => el.textContent = item.title);
 
             /* const descriptionSourceElement = newsClone.querySelector('.news__description-source') as HTMLElement | null;
             if (descriptionSourceElement) {
                 descriptionSourceElement.textContent = item.source.name;
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__description-source', (el) => el.textContent = item.source.name);
+            this.setElement(newsClone, '.news__description-source', (el) => el.textContent = item.source.name);
 
             /* const descriptionElement = newsClone.querySelector('.news__description-content') as HTMLElement | null;
             if (descriptionElement) {
                 descriptionElement.textContent = item.description;
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__description-content', (el) => el.textContent = item.description);
+            this.setElement(newsClone, '.news__description-content', (el) => el.textContent = item.description);
 
             /* const readMoreElement = newsClone.querySelector('.news__read-more a') as HTMLElement | null;
             if (readMoreElement) {
                 readMoreElement.setAttribute('href', item.url);
             } */
-            this.setElement<HTMLElement>(newsClone, '.news__read-more a', (el) => el.setAttribute('href', item.url));
+            this.setElement(newsClone, '.news__read-more a', (el) => el.setAttribute('href', item.url));
 
             fragment.append(newsClone);
         });
 
-        const newsContainer = document.querySelector('.news') as HTMLElement | null;
+        /* const newsContainer = document.querySelector('.news') as HTMLElement | null;
         if (newsContainer) {
             newsContainer.innerHTML = '';
             newsContainer.appendChild(fragment);
         } else {
             console.warn('Container .news not found');
-        }
-        /**
-         *  this.setElement<HTMLElement>(document, '.news', (el) => {
-                el.innerHTML = '';
-                el.appendChild(fragment);
-            });
-         */
+        } */
+
+        this.setElement<HTMLElement>(document, '.news', (el) => {
+            el.innerHTML = '';
+            el.appendChild(fragment);
+        });
     }
 }
 
