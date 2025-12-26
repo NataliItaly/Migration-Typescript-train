@@ -20,9 +20,10 @@ class AppController extends AppLoader {
 
         while (target && target !== newsContainer) {
             if (target.classList.contains('source__item')) {
-                const sourceId = target.getAttribute('data-source-id');
-                if (newsContainer.getAttribute('data-source') !== sourceId) {
-                    newsContainer.setAttribute('data-source', sourceId);
+                const sourceId = target.dataset.sourceId;
+
+                if (sourceId && newsContainer.dataset.source !== sourceId) {
+                    newsContainer.dataset.source = sourceId;
                     super.getResp(
                         {
                             endpoint: 'everything',
