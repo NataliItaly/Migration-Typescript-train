@@ -2,11 +2,16 @@ import './sources.css';
 import { Source } from '../../interfaces/interfaces';
 
 class Sources {
-    private setElement<T extends HTMLElement>(root: ParentNode, selector: string, callback: (el: T) => void): void {
+    private setElement<T extends HTMLElement>(root: ParentNode, selector: string, callback: (el: T) => void, options?: {required?: boolean}): void {
         const el = root.querySelector(selector) as T | null;
-        if (el) {
-            callback(el);
+
+        if (!el) {
+            if (options?.required) {
+                console.warn('Element .sources was not found');
+            }
+            return;
         }
+        callback(el);
     }
 
     draw(data: Source[]) {
@@ -50,7 +55,7 @@ class Sources {
         this.setElement(document, '.sources', (el) => {
             el.innerHTML = '';
             el.append(fragment);
-        });
+        }, {required: true});
     }
 }
 
