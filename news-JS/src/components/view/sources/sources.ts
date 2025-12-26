@@ -7,7 +7,7 @@ class Sources {
 
         if (!el) {
             if (options?.required) {
-                console.warn('Element .sources was not found');
+                throw new Error(`Required element not found: ${selector}`);
             }
             return;
         }
@@ -26,16 +26,8 @@ class Sources {
         data.forEach((item) => {
             const sourceClone = sourceItemTemp.content.cloneNode(true) as DocumentFragment;
 
-            /* const nameElement = sourceClone.querySelector('.source__item-name') as HTMLElement | null;
-            if (nameElement) {
-                nameElement.textContent = item.name;
-            } */
             this.setElement(sourceClone, '.source__item-name', (el) => el.textContent = item.name);
 
-            /* const itemElement = sourceClone.querySelector('.source__item') as HTMLElement | null;
-            if (itemElement && item.id) {
-                itemElement.dataset.sourceId = item.id;
-            } */
             this.setElement(sourceClone, '.source__item', (el) => {
                 if (item.id) el.dataset.sourceId = item.id;
             });
@@ -43,14 +35,6 @@ class Sources {
 
             fragment.append(sourceClone);
         });
-
-        /* const sourcesContainer = document.querySelector('.sources') as HTMLElement | null;
-        if (sourcesContainer) {
-            sourcesContainer.innerHTML = '';
-            sourcesContainer.append(fragment);
-        } else {
-            console.warn('Element .sources was not found');
-        } */
 
         this.setElement(document, '.sources', (el) => {
             el.innerHTML = '';
