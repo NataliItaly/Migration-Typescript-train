@@ -20,8 +20,8 @@ class Sources {
             }
 
             const itemElement = sourceClone.querySelector('.source__item') as HTMLElement | null;
-            if (itemElement) {
-                itemElement.setAttribute('data-source-id', item.id);
+            if (itemElement && item.id) {
+                itemElement.dataset.sourceId = item.id;
             }
 
             fragment.append(sourceClone);
@@ -29,6 +29,7 @@ class Sources {
 
         const sourcesContainer = document.querySelector('.sources') as HTMLElement | null;
         if (sourcesContainer) {
+            sourcesContainer.innerHTML = '';
             sourcesContainer.append(fragment);
         } else {
             console.warn('Element .sources was not found');
