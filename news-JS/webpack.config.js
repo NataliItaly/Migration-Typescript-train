@@ -26,7 +26,7 @@ const baseConfig = {
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/Migration-Typescript-train/',
+        publicPath: '/Migration-Typescript-train/news-JS',
     },
     plugins: [
         new DotenvWebpackPlugin(),
